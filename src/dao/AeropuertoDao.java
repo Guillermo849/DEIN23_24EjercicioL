@@ -201,7 +201,7 @@ public class AeropuertoDao {
 
 		try {
 			conexion = new ConexionBDD();
-			String consulta = "INSERT INTO persona(pais,ciudad,calle,numero) VALUES('" + pais + "','" + ciudad + "','"
+			String consulta = "INSERT INTO aeropuertos(pais,ciudad,calle,numero) VALUES('" + pais + "','" + ciudad + "','"
 					+ calle + "'" + numero + ");";
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
@@ -222,7 +222,7 @@ public class AeropuertoDao {
 			int idDireccion = direccionAeropuerto(aeropuerto);
 
 			conexion = new ConexionBDD();
-			consulta = "UPDATE aeropuerto SET nombre = '" + aeropuerto.getNombre() + "', anio_inauguracion = "
+			consulta = "UPDATE aeropuertos SET nombre = '" + aeropuerto.getNombre() + "', anio_inauguracion = "
 					+ aeropuerto.getAnio() + ", capacidad = '" + aeropuerto.getCapacidad() + ", id_direccion"
 					+ idDireccion + "' WHERE id = " + aeropuerto.getId() + ";";
 			pstmt = conexion.getConexion().prepareStatement(consulta);
@@ -270,5 +270,30 @@ public class AeropuertoDao {
 		conexion.CloseConexion();
 
 		return idDireccion;
+	}
+	
+	public void borrarAeropuerto(Aeropuertos aeropuerto, boolean privado) {
+		
+		int idAeropuerto = aeropuerto.getId();
+		
+		try {
+			conexion = new ConexionBDD();
+			String consulta = "DELETE FROM aeropuertos WHERE id = " + idAeropuerto + ";";
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			pstmt.executeUpdate();
+			
+			if (privado == true) {
+				consulta = "DELETE FROM aeropuertos_privados WHERE id = " + idAeropuerto + ";";
+			} else {
+				consulta = "DELETE FROM aeropuertos_publicos WHERE id = " + idAeropuerto + ";";
+			}
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			pstmt.executeUpdate();
+			
+			conexion.CloseConexion();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
