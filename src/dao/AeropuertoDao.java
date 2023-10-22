@@ -232,6 +232,50 @@ public class AeropuertoDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+
+	/* Modifica el aeropuerto que le pasemos */
+	public void modificarAeropuerto(Aeropuertos aeropuerto, boolean privado) {
+
+		try {
+
+			/* Recoge la ip de la direccion */
+			String consulta = "SELECT id FROM direcciones WHERE pais LIKE '" + aeropuerto.getPais()
+					+ "' AND ciudad LIKE '" + aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle()
+					+ "' AND numero == " + aeropuerto.getNumero();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+
+			int idDireccion;
+
+			/* Si no existe la direccion, creará una nueva */
+			if (rs.next() == false) {
+				aniadirDireccion(aeropuerto.getPais(), aeropuerto.getCalle(), aeropuerto.getCalle(),
+						aeropuerto.getNumero());
+				rs.close();
+				/* Recoge la ip de la nueva direccion */
+				pstmt = conexion.getConexion().prepareStatement(consulta);
+				rs = pstmt.executeQuery();
+				idDireccion = rs.getInt("id");
+				rs.close();
+
+				/* Si ya existe la direccion guardará el id de está */
+			} else {
+				idDireccion = rs.getInt("id");
+				rs.close();
+			}
+
+			conexion = new ConexionBDD();
+			consulta = "UPDATE aeropuerto SET nombre = '" + aeropuerto.getNombre() + "', anio_inauguracion = "
+					+ aeropuerto.getAnio() + ", capacidad = '" + aeropuerto.getCapacidad() + ", id_direccion"
+					+ idDireccion + "' WHERE id = " + aeropuerto.getId() + ";";
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }
