@@ -11,6 +11,8 @@ public class Aeropuertos {
 	private int capacidad;
 	private int privado;
 	private int numSocios;
+	private int financiacion;
+	private int numTrabajadores;
 	
 	public Aeropuertos(int id, String nombre, String pais, String ciudad, String calle, int numero, int anio,
 			int capacidad, int privado, int numSocios) {
@@ -24,6 +26,21 @@ public class Aeropuertos {
 		this.capacidad = capacidad;
 		this.privado = privado;
 		this.numSocios = numSocios;
+	}
+	
+	public Aeropuertos(int id, String nombre, String pais, String ciudad, String calle, int numero, int anio,
+			int capacidad, int privado, int financiacion, int numTrabajadores) {
+		this.id = id;
+		this.nombre = nombre;
+		this.pais = pais;
+		this.ciudad = ciudad;
+		this.calle = calle;
+		this.numero = numero;
+		this.anio = anio;
+		this.capacidad = capacidad;
+		this.privado = privado;
+		this.financiacion = financiacion;
+		this.numTrabajadores = numTrabajadores;
 	}
 
 	public int getId() {
