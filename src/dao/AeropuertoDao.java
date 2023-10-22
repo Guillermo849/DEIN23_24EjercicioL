@@ -227,6 +227,14 @@ public class AeropuertoDao {
 					+ idDireccion + "' WHERE id = " + aeropuerto.getId() + ";";
 			pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
+			
+			if (privado == true) {
+				consulta = "UPDATE FROM aeropuertos_privados SET numero_socios = " + aeropuerto.getNumSocios() + " WHERE id = " + aeropuerto.getId() + ";";
+			} else {
+				consulta = "UPDATE FROM aeropuertos_publicos SET financiacion = " + aeropuerto.getFinanciacion() + ", num_trabajadores = " + aeropuerto.getNumTrabajadores() + " WHERE id = " + aeropuerto.getId() + ";";
+			}
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
