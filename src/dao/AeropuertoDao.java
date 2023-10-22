@@ -14,7 +14,7 @@ public class AeropuertoDao {
 
 	private ConexionBDD conexion;
 
-	/* Devuelve una lista de las personas almacenadas en la base de datos */
+	/* Devuelve una lista de los aeropuertos privados almacenadas en la base de datos */
 	public ObservableList<Aeropuertos> cargarAeropuertosPrivados() {
 
 		ObservableList<Aeropuertos> aeropuertosPrivados = FXCollections.observableArrayList();
@@ -76,6 +76,75 @@ public class AeropuertoDao {
 			e.printStackTrace();
 		}
 		return aeropuertosPrivados;
+	}
+	
+	/* Devuelve una lista de los aeropuertos publicos almacenadas en la base de datos */
+	public ObservableList<Aeropuertos> cargarAeropuertosPublicos() {
+
+		ObservableList<Aeropuertos> aeropuertosPublicos = FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBDD();
+			
+			/* Recogemos la información de los IDs y número de socios de los aeropuertos publicos */
+			String consulta = "select * from aeropuertos_publicos";
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			
+			HashMap<Integer, Integer[]> mapPublicos = new HashMap<Integer, Integer[]>();
+			
+			while (rs.next()) {
+				int idAeropuertos = rs.getInt("id_aeropuerto");
+				int financiacion = rs.getInt("financiacion");
+				int numTrabajadores = rs.getInt("num_trabajadores");
+				Integer[] infoPublicos = new Integer[2];
+				infoPublicos[0] = financiacion;
+				infoPublicos[1] = numTrabajadores;
+				mapPublicos.put(idAeropuertos, infoPublicos);
+			}
+			rs.close();
+			
+			
+			/* Recogemos los aeropuertos que su id este dentro del HashMap mapPublicos */
+			
+			consulta = "SELECT * FROM aeropuertos";
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				if (mapPublicos.containsKey(rs.getInt("id"))) {
+					
+					String consultaDireccion = "SELECT * FROM direcciones WHERE id LIKE " + rs.getInt("id_direccion");
+					
+					PreparedStatement pstmtDireccion = conexion.getConexion().prepareStatement(consultaDireccion);
+					ResultSet rsDireccion = pstmtDireccion.executeQuery();
+					
+					int id = rs.getInt("id");
+					String nombre = rs.getString("nombre");
+					String pais = rsDireccion.getString("pais");
+					String ciudad = rsDireccion.getString("ciudad");
+					String calle = rsDireccion.getString("calle");
+					int numero = rsDireccion.getInt("numero");
+					int anio = rs.getInt("anio_inaguracion");
+					int capacidad = rs.getInt("capacidad");
+					int financiacion = mapPublicos.get(rs.getInt("id"))[0];
+					int numTrabajadores = mapPublicos.get(rs.getInt("id"))[1];
+					
+					Aeropuertos a = new Aeropuertos(id, nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
+					
+					aeropuertosPublicos.add(a);
+					rsDireccion.close();
+					
+				}
+			}
+			
+			rs.close();
+			
+			conexion.CloseConexion();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return aeropuertosPublicos;
 	}
 
 }
