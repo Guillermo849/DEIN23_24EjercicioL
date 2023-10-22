@@ -164,31 +164,9 @@ public class AeropuertoDao {
 		try {
 			conexion = new ConexionBDD();
 
-			/* Recoge la ip de la direccion */
-			String consulta = "SELECT id FROM direcciones WHERE pais LIKE '" + aeropuerto.getPais()
-					+ "' AND ciudad LIKE '" + aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle()
-					+ "' AND numero == " + aeropuerto.getNumero();
-			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
-			ResultSet rs = pstmt.executeQuery();
-
-			int idDireccion;
-
-			/* Si no existe la direccion, creará una nueva */
-			if (rs.next() == false) {
-				aniadirDireccion(aeropuerto.getPais(), aeropuerto.getCalle(), aeropuerto.getCalle(),
-						aeropuerto.getNumero());
-				rs.close();
-				/* Recoge la ip de la nueva direccion */
-				pstmt = conexion.getConexion().prepareStatement(consulta);
-				rs = pstmt.executeQuery();
-				idDireccion = rs.getInt("id");
-				rs.close();
-
-				/* Si ya existe la direccion guardará el id de está */
-			} else {
-				idDireccion = rs.getInt("id");
-				rs.close();
-			}
+			String consulta;
+			PreparedStatement pstmt;
+			int idDireccion = direccionAeropuerto(aeropuerto);
 
 			consulta = "INSERT INTO aeropuertos(nombre,anio_inauguracion, capacidad, id_direccion) VALUES('"
 					+ aeropuerto.getNombre() + "'," + aeropuerto.getAnio() + "," + aeropuerto.getCapacidad() + ","
@@ -239,31 +217,9 @@ public class AeropuertoDao {
 
 		try {
 
-			/* Recoge la ip de la direccion */
-			String consulta = "SELECT id FROM direcciones WHERE pais LIKE '" + aeropuerto.getPais()
-					+ "' AND ciudad LIKE '" + aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle()
-					+ "' AND numero == " + aeropuerto.getNumero();
-			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
-			ResultSet rs = pstmt.executeQuery();
-
-			int idDireccion;
-
-			/* Si no existe la direccion, creará una nueva */
-			if (rs.next() == false) {
-				aniadirDireccion(aeropuerto.getPais(), aeropuerto.getCalle(), aeropuerto.getCalle(),
-						aeropuerto.getNumero());
-				rs.close();
-				/* Recoge la ip de la nueva direccion */
-				pstmt = conexion.getConexion().prepareStatement(consulta);
-				rs = pstmt.executeQuery();
-				idDireccion = rs.getInt("id");
-				rs.close();
-
-				/* Si ya existe la direccion guardará el id de está */
-			} else {
-				idDireccion = rs.getInt("id");
-				rs.close();
-			}
+			String consulta;
+			PreparedStatement pstmt;
+			int idDireccion = direccionAeropuerto(aeropuerto);
 
 			conexion = new ConexionBDD();
 			consulta = "UPDATE aeropuerto SET nombre = '" + aeropuerto.getNombre() + "', anio_inauguracion = "
@@ -278,4 +234,41 @@ public class AeropuertoDao {
 		}
 	}
 
+	/*
+	 * Metodo que comprueba si la direccion del aeropuerto existe o no y si no
+	 * existe lo crea. Devolvera el id de la direccion
+	 */
+	private int direccionAeropuerto(Aeropuertos aeropuerto) throws SQLException {
+
+		/* Recoge la ip de la direccion */
+		conexion = new ConexionBDD();
+
+		String consulta = "SELECT id FROM direcciones WHERE pais LIKE '" + aeropuerto.getPais() + "' AND ciudad LIKE '"
+				+ aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle() + "' AND numero == "
+				+ aeropuerto.getNumero();
+		PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+		ResultSet rs = pstmt.executeQuery();
+
+		int idDireccion;
+
+		/* Si no existe la direccion, creará una nueva */
+		if (rs.next() == false) {
+			aniadirDireccion(aeropuerto.getPais(), aeropuerto.getCalle(), aeropuerto.getCalle(),
+					aeropuerto.getNumero());
+			rs.close();
+			/* Recoge la ip de la nueva direccion */
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			rs = pstmt.executeQuery();
+			idDireccion = rs.getInt("id");
+			rs.close();
+
+			/* Si ya existe la direccion guardará el id de está */
+		} else {
+			idDireccion = rs.getInt("id");
+			rs.close();
+		}
+		conexion.CloseConexion();
+
+		return idDireccion;
+	}
 }
