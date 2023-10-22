@@ -9,13 +9,12 @@ public class Aeropuertos {
 	private int numero;
 	private int anio;
 	private int capacidad;
-	private int privado;
 	private int numSocios;
 	private int financiacion;
 	private int numTrabajadores;
 	
 	public Aeropuertos(int id, String nombre, String pais, String ciudad, String calle, int numero, int anio,
-			int capacidad, int privado, int numSocios) {
+			int capacidad, int numSocios) {
 		this.id = id;
 		this.nombre = nombre;
 		this.pais = pais;
@@ -24,12 +23,11 @@ public class Aeropuertos {
 		this.numero = numero;
 		this.anio = anio;
 		this.capacidad = capacidad;
-		this.privado = privado;
 		this.numSocios = numSocios;
 	}
 	
 	public Aeropuertos(int id, String nombre, String pais, String ciudad, String calle, int numero, int anio,
-			int capacidad, int privado, int financiacion, int numTrabajadores) {
+			int capacidad, int financiacion, int numTrabajadores) {
 		this.id = id;
 		this.nombre = nombre;
 		this.pais = pais;
@@ -38,7 +36,6 @@ public class Aeropuertos {
 		this.numero = numero;
 		this.anio = anio;
 		this.capacidad = capacidad;
-		this.privado = privado;
 		this.financiacion = financiacion;
 		this.numTrabajadores = numTrabajadores;
 	}
@@ -107,19 +104,27 @@ public class Aeropuertos {
 		this.capacidad = capacidad;
 	}
 
-	public int getPrivado() {
-		return privado;
-	}
-
-	public void setPrivado(int privado) {
-		this.privado = privado;
-	}
-
 	public int getNumSocios() {
 		return numSocios;
 	}
 
 	public void setNumSocios(int numSocios) {
 		this.numSocios = numSocios;
+	}
+
+	public int getFinanciacion() {
+		return financiacion;
+	}
+
+	public void setFinanciacion(int financiacion) {
+		this.financiacion = financiacion;
+	}
+
+	public int getNumTrabajadores() {
+		return numTrabajadores;
+	}
+
+	public void setNumTrabajadores(int numTrabajadores) {
+		this.numTrabajadores = numTrabajadores;
 	}
 }
