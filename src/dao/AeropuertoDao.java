@@ -23,11 +23,13 @@ public class AeropuertoDao {
 			
 			PreparedStatement pstmtDireccion = conexion.getConexion().prepareStatement(consultaDireccion);
 			ResultSet rsDireccion = pstmtDireccion.executeQuery();
+			rsDireccion.next();
 			
 			String pais = rsDireccion.getString("pais");
 			String ciudad = rsDireccion.getString("ciudad");
 			String calle = rsDireccion.getString("calle");
 			int numero = rsDireccion.getInt("numero");
+			System.out.println(pais + ciudad);
 			
 			rsDireccion.close();
 			conexion.CloseConexion();
@@ -85,7 +87,7 @@ public class AeropuertoDao {
 					String ciudad = dir.getCiudad();
 					String calle = dir.getCalle();
 					int numero = dir.getNumero();
-					int anio = rs.getInt("anio_inaguracion");
+					int anio = rs.getInt("anio_inauguracion");
 					int capacidad = rs.getInt("capacidad");
 					int numSocios = mapPrivados.get(rs.getInt("id"));
 
