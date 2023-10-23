@@ -9,11 +9,38 @@ import conexion.ConexionBDD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Aeropuertos;
+import model.Direccion;
 
 public class AeropuertoDao {
 
 	private ConexionBDD conexion;
-
+	
+	private Direccion dirAeropuerto(int idAeropuerto) {
+		try {
+			conexion = new ConexionBDD();
+			
+			String consultaDireccion = "SELECT * FROM direcciones WHERE id = " + idAeropuerto;
+			
+			PreparedStatement pstmtDireccion = conexion.getConexion().prepareStatement(consultaDireccion);
+			ResultSet rsDireccion = pstmtDireccion.executeQuery();
+			
+			String pais = rsDireccion.getString("pais");
+			String ciudad = rsDireccion.getString("ciudad");
+			String calle = rsDireccion.getString("calle");
+			int numero = rsDireccion.getInt("numero");
+			
+			rsDireccion.close();
+			conexion.CloseConexion();
+			
+			return new Direccion(pais, ciudad, calle, numero);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/*
 	 * Devuelve una lista de los aeropuertos privados almacenadas en la base de
 	 * datos
@@ -50,17 +77,14 @@ public class AeropuertoDao {
 			while (rs.next()) {
 				if (mapPrivados.containsKey(rs.getInt("id"))) {
 
-					String consultaDireccion = "SELECT * FROM direcciones WHERE id LIKE " + rs.getInt("id_direccion");
-
-					PreparedStatement pstmtDireccion = conexion.getConexion().prepareStatement(consultaDireccion);
-					ResultSet rsDireccion = pstmtDireccion.executeQuery();
+					Direccion dir = dirAeropuerto(rs.getInt("id"));
 
 					int id = rs.getInt("id");
 					String nombre = rs.getString("nombre");
-					String pais = rsDireccion.getString("pais");
-					String ciudad = rsDireccion.getString("ciudad");
-					String calle = rsDireccion.getString("calle");
-					int numero = rsDireccion.getInt("numero");
+					String pais = dir.getPais();
+					String ciudad = dir.getCiudad();
+					String calle = dir.getCalle();
+					int numero = dir.getNumero();
 					int anio = rs.getInt("anio_inaguracion");
 					int capacidad = rs.getInt("capacidad");
 					int numSocios = mapPrivados.get(rs.getInt("id"));
@@ -69,8 +93,6 @@ public class AeropuertoDao {
 							numSocios);
 
 					aeropuertosPrivados.add(a);
-					rsDireccion.close();
-
 				}
 			}
 
@@ -124,17 +146,14 @@ public class AeropuertoDao {
 			while (rs.next()) {
 				if (mapPublicos.containsKey(rs.getInt("id"))) {
 
-					String consultaDireccion = "SELECT * FROM direcciones WHERE id LIKE " + rs.getInt("id_direccion");
-
-					PreparedStatement pstmtDireccion = conexion.getConexion().prepareStatement(consultaDireccion);
-					ResultSet rsDireccion = pstmtDireccion.executeQuery();
+					Direccion dir = dirAeropuerto(rs.getInt("id"));
 
 					int id = rs.getInt("id");
 					String nombre = rs.getString("nombre");
-					String pais = rsDireccion.getString("pais");
-					String ciudad = rsDireccion.getString("ciudad");
-					String calle = rsDireccion.getString("calle");
-					int numero = rsDireccion.getInt("numero");
+					String pais = dir.getPais();
+					String ciudad = dir.getCiudad();
+					String calle = dir.getCalle();
+					int numero = dir.getNumero();
 					int anio = rs.getInt("anio_inaguracion");
 					int capacidad = rs.getInt("capacidad");
 					int financiacion = mapPublicos.get(rs.getInt("id"))[0];
@@ -144,8 +163,6 @@ public class AeropuertoDao {
 							financiacion, numTrabajadores);
 
 					aeropuertosPublicos.add(a);
-					rsDireccion.close();
-
 				}
 			}
 
