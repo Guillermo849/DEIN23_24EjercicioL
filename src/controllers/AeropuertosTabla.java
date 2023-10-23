@@ -1,15 +1,24 @@
 package controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import dao.AeropuertoDao;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.Aeropuertos;
 
-public class AeropuertosTabla {
+public class AeropuertosTabla implements Initializable {
 
     @FXML
     private MenuItem mnItAniadirAeropuerto;
@@ -45,35 +54,39 @@ public class AeropuertosTabla {
     private TextField txtVNombre;
 
     @FXML
-    private TableView<?> tbViewAeropuertos;
+    private TableView<Aeropuertos> tbViewAeropuertos;
 
     @FXML
-    private TableColumn<?, ?> tbColId;
+    private TableColumn<Aeropuertos, Integer> tbColId;
 
     @FXML
-    private TableColumn<?, ?> tbColNombre;
+    private TableColumn<Aeropuertos, String> tbColNombre;
 
     @FXML
-    private TableColumn<?, ?> tbColPais;
+    private TableColumn<Aeropuertos, String> tbColPais;
 
     @FXML
-    private TableColumn<?, ?> tbColCiudad;
+    private TableColumn<Aeropuertos, String> tbColCiudad;
 
     @FXML
-    private TableColumn<?, ?> tbColCalle;
+    private TableColumn<Aeropuertos, String> tbColCalle;
 
     @FXML
-    private TableColumn<?, ?> tbColNumero;
+    private TableColumn<Aeropuertos, Integer> tbColNumero;
 
     @FXML
-    private TableColumn<?, ?> tbColAnio;
+    private TableColumn<Aeropuertos, Integer> tbColAnio;
 
     @FXML
-    private TableColumn<?, ?> tbColCapacidad;
+    private TableColumn<Aeropuertos, Integer> tbColCapacidad;
 
     @FXML
-    private TableColumn<?, ?> tbColNumSocios;
-
+    private TableColumn<Aeropuertos, Integer> tbColNumSocios;
+    
+    private AeropuertoDao aeropuertoD;
+    
+    private ObservableList<Aeropuertos> lstAeropuertos;
+    
     @FXML
     void activarAvion(ActionEvent event) {
 
@@ -111,7 +124,26 @@ public class AeropuertosTabla {
 
     @FXML
     void mostrarAeropuerto(ActionEvent event) {
-
+    	
     }
 
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		tbColId.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("ID"));
+		tbColNombre.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Nombre"));
+		tbColPais.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("País"));
+		tbColCiudad.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Ciudad"));
+		tbColCalle.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Calle"));
+		tbColNumero.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Número"));
+		tbColAnio.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Año"));
+		tbColCapacidad.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Capacidad"));
+		tbColNumSocios.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("NºSocios"));
+		
+		aeropuertoD = new AeropuertoDao();
+		
+		lstAeropuertos = aeropuertoD.cargarAeropuertosPrivados();
+		
+		tbViewAeropuertos.setItems(aeropuertoD.cargarAeropuertosPrivados());
+	}
 }
