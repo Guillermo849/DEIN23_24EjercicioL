@@ -130,15 +130,15 @@ public class AeropuertosTabla implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		tbColId.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("ID"));
+		tbColId.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("id"));
 		tbColNombre.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Nombre"));
-		tbColPais.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("País"));
+		tbColPais.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("pais"));
 		tbColCiudad.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Ciudad"));
 		tbColCalle.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Calle"));
-		tbColNumero.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Número"));
-		tbColAnio.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Año"));
+		tbColNumero.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("numero"));
+		tbColAnio.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("anio"));
 		tbColCapacidad.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Capacidad"));
-		tbColNumSocios.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("NºSocios"));
+		tbColNumSocios.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("numSocios"));
 		
 		aeropuertoD = new AeropuertoDao();
 		
