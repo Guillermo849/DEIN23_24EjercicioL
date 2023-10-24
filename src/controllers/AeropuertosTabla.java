@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import dao.AeropuertoDao;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,9 +78,15 @@ public class AeropuertosTabla implements Initializable {
 
     @FXML
     private TableColumn<Aeropuertos, Integer> tbColCapacidad;
-
+    
     @FXML
     private TableColumn<Aeropuertos, Integer> tbColNumSocios;
+    
+    @FXML
+    private TableColumn<Aeropuertos, Integer> tbColFinanciacion;
+    
+    @FXML
+    private TableColumn<Aeropuertos, Integer> tbColNumTrabajadores;
     
     private AeropuertoDao aeropuertoD;
     
@@ -89,12 +94,12 @@ public class AeropuertosTabla implements Initializable {
     
     @FXML
     void activarAvion(ActionEvent event) {
-
+    	
     }
 
     @FXML
     void aniadirAeropuerto(ActionEvent event) {
-
+    	
     }
 
     @FXML
@@ -126,9 +131,32 @@ public class AeropuertosTabla implements Initializable {
     void mostrarAeropuerto(ActionEvent event) {
     	
     }
-
+    
+    private void getTabla(ActionEvent event) {
+    	if (rdBtnPublico.isSelected()) {
+    		tbColNumSocios.setVisible(false);
+    		tbColFinanciacion.setVisible(true);
+    		tbColNumTrabajadores.setVisible(true);
+    		
+    		lstAeropuertos = aeropuertoD.cargarAeropuertosPublicos();
+    		tbViewAeropuertos.setItems(aeropuertoD.cargarAeropuertosPublicos());
+    	}
+    	if (rdBtnPrivados.isSelected()) {
+    		tbColNumSocios.setVisible(true);
+    		tbColFinanciacion.setVisible(false);
+    		tbColNumTrabajadores.setVisible(false);
+    		
+    		lstAeropuertos = aeropuertoD.cargarAeropuertosPrivados();
+    		tbViewAeropuertos.setItems(aeropuertoD.cargarAeropuertosPrivados());
+    	}
+    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		rdBtnPublico.setOnAction(e -> getTabla(e));
+		rdBtnPrivados.setOnAction(e -> getTabla(e));
+		
 		// TODO Auto-generated method stub
 		tbColId.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("id"));
 		tbColNombre.setCellValueFactory(new PropertyValueFactory<Aeropuertos, String>("Nombre"));
@@ -138,7 +166,13 @@ public class AeropuertosTabla implements Initializable {
 		tbColNumero.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("numero"));
 		tbColAnio.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("anio"));
 		tbColCapacidad.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("Capacidad"));
+		// Tabla Aeropuerto Privado
 		tbColNumSocios.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("numSocios"));
+		// Tabla Aeropuertos Público
+		tbColFinanciacion.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("financiacion"));
+		tbColNumTrabajadores.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("numTrabajadores"));
+		
+		
 		
 		aeropuertoD = new AeropuertoDao();
 		

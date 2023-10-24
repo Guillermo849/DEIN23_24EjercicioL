@@ -29,7 +29,6 @@ public class AeropuertoDao {
 			String ciudad = rsDireccion.getString("ciudad");
 			String calle = rsDireccion.getString("calle");
 			int numero = rsDireccion.getInt("numero");
-			System.out.println(pais + ciudad);
 			
 			rsDireccion.close();
 			conexion.CloseConexion();
@@ -156,7 +155,7 @@ public class AeropuertoDao {
 					String ciudad = dir.getCiudad();
 					String calle = dir.getCalle();
 					int numero = dir.getNumero();
-					int anio = rs.getInt("anio_inaguracion");
+					int anio = rs.getInt("anio_inauguracion");
 					int capacidad = rs.getInt("capacidad");
 					int financiacion = mapPublicos.get(rs.getInt("id"))[0];
 					int numTrabajadores = mapPublicos.get(rs.getInt("id"))[1];
