@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Aeropuertos;
 
@@ -99,11 +100,23 @@ public class AeropuertosTabla implements Initializable {
     
     private AniadirAeropuerto addAeropuertoVentana;
     
+    private int aeropuertoIndex = -1;
+    
+    void selectAeropuerto(MouseEvent event) {
+		if (tbViewAeropuertos.getSelectionModel().getSelectedItem() != null) {
+			aeropuertoIndex = tbViewAeropuertos.getSelectionModel().getSelectedIndex();
+		}
+	}
+    
     @FXML
     void activarAvion(ActionEvent event) {
     	
     }
-
+    
+    /**
+     * Habrirá una ventana para que se añada un nuevo aeropuerto
+     * @param event
+     */
     @FXML
     void aniadirAeropuerto(ActionEvent event) {
     	try {
@@ -112,7 +125,7 @@ public class AeropuertosTabla implements Initializable {
 			Parent root = loader.load();
 			/* Le dice a la nueva ventana cual es su ventana padre */
 			addAeropuertoVentana = loader.getController();
-			addAeropuertoVentana.setParent(this);
+			addAeropuertoVentana.setParent(this, null);
 
 			Stage agregarStage = new Stage();
 			agregarStage.setScene(new Scene(root));
@@ -139,10 +152,32 @@ public class AeropuertosTabla implements Initializable {
     void borrarAvion(ActionEvent event) {
 
     }
-
+    
+    /**
+     * Habrirá una nueva ventana para editar los valores del aeropuerto seleccionado.
+     * 
+     * @param event
+     */
     @FXML
     void editarAeropuerto(ActionEvent event) {
+    	if (aeropuertoIndex != -1) {
+    		try {
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/aniadirAeropuerto.fxml"));
+    			Parent root = loader.load();
+    			/* Le dice a la nueva ventana cual es su ventana padre */
+    			addAeropuertoVentana = loader.getController();
+    			addAeropuertoVentana.setParent(this, tbViewAeropuertos.getItems().get(aeropuertoIndex));
 
+    			Stage agregarStage = new Stage();
+    			agregarStage.setScene(new Scene(root));
+    			agregarStage.setResizable(false);
+    			agregarStage.setTitle("AVIONES-EDITAR AEROPUERTOS");
+    			agregarStage.showAndWait();
+
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
 
     @FXML
@@ -155,6 +190,12 @@ public class AeropuertosTabla implements Initializable {
     	
     }
     
+    /**
+     * Cargará la tabla de aeropuertos públicos o privados 
+     * dependiendo de que RadioButton esté seleccionado.
+     * 
+     * @param event
+     */
     public void getTabla(ActionEvent event) {
     	if (rdBtnPublico.isSelected()) {
     		tbColNumSocios.setVisible(false);
@@ -174,11 +215,44 @@ public class AeropuertosTabla implements Initializable {
     	}
     }
     
+    /**
+     * Devuelve el DAO de aeropuerto.
+     * @return
+     */
+    public AeropuertoDao getAeropuertoD() {
+		return aeropuertoD;
+	}
+	
+    /**
+     * Determina si un aeropuerto es privado o no
+     * 
+     * @param aero
+     * @return
+     */
+	public boolean privado(Aeropuertos aero) {
+		
+		ObservableList<Aeropuertos> aeropuetosPrivados = aeropuertoD.cargarAeropuertosPrivados();
+		
+		for (Aeropuertos a : aeropuetosPrivados) {
+			if (a.getId() == aero.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Inicializará las acciones de los Radio Buttons.
+	 * Determinará el tipo de información que tendrá las Table Columns.
+	 * Mostrará la información de los aeropuertos privados en la tabla.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
 		rdBtnPublico.setOnAction(e -> getTabla(e));
 		rdBtnPrivados.setOnAction(e -> getTabla(e));
+		
+		tbViewAeropuertos.setOnMouseClicked(e -> selectAeropuerto(e));
 		
 		// TODO Auto-generated method stub
 		tbColId.setCellValueFactory(new PropertyValueFactory<Aeropuertos, Integer>("id"));
@@ -202,9 +276,5 @@ public class AeropuertosTabla implements Initializable {
 		lstAeropuertos = aeropuertoD.cargarAeropuertosPrivados();
 		
 		tbViewAeropuertos.setItems(aeropuertoD.cargarAeropuertosPrivados());
-	}
-	
-	public AeropuertoDao getAeropuertoD() {
-		return aeropuertoD;
 	}
 }

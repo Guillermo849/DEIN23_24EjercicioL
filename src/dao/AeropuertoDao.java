@@ -253,26 +253,27 @@ public class AeropuertoDao {
 	public void modificarAeropuerto(Aeropuertos aeropuerto, boolean privado) {
 
 		try {
-
+			
 			String consulta;
 			PreparedStatement pstmt;
 			int idDireccion = direccionAeropuerto(aeropuerto);
 
 			conexion = new ConexionBDD();
 			consulta = "UPDATE aeropuertos SET nombre = '" + aeropuerto.getNombre() + "', anio_inauguracion = "
-					+ aeropuerto.getAnio() + ", capacidad = '" + aeropuerto.getCapacidad() + ", id_direccion"
-					+ idDireccion + "' WHERE id = " + aeropuerto.getId() + ";";
+					+ aeropuerto.getAnio() + ", capacidad = " + aeropuerto.getCapacidad() + ", id_direccion = "
+					+ idDireccion + " WHERE id = " + aeropuerto.getId() + ";";
 			pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
 			
 			if (privado == true) {
-				consulta = "UPDATE FROM aeropuertos_privados SET numero_socios = " + aeropuerto.getNumSocios() + " WHERE id = " + aeropuerto.getId() + ";";
+				consulta = "UPDATE aeropuertos_privados SET numero_socios = " + aeropuerto.getNumSocios() + " WHERE id_aeropuerto = " + aeropuerto.getId() + ";";
 			} else {
-				consulta = "UPDATE FROM aeropuertos_publicos SET financiacion = " + aeropuerto.getFinanciacion() + ", num_trabajadores = " + aeropuerto.getNumTrabajadores() + " WHERE id = " + aeropuerto.getId() + ";";
+				consulta = "UPDATE aeropuertos_publicos SET financiacion = " + aeropuerto.getFinanciacion() + ", num_trabajadores = " + aeropuerto.getNumTrabajadores() + " WHERE id_aeropuerto = " + aeropuerto.getId() + ";";
 			}
 			pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
-
+			
+			conexion.CloseConexion();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

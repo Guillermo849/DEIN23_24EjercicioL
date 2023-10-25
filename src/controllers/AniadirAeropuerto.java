@@ -16,7 +16,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import model.Aeropuertos;
 
-public class AniadirAeropuerto implements Initializable {
+public class AniadirAeropuerto {
 
 	@FXML
 	private Button btnGuardar;
@@ -74,9 +74,40 @@ public class AniadirAeropuerto implements Initializable {
 
 	private AeropuertosTabla aeropuertosT;
 	
-	public void setParent(AeropuertosTabla parent) {
+	private Aeropuertos aeropuerto;
+	
+	public void setParent(AeropuertosTabla parent, Aeropuertos aero) {
     	this.aeropuertosT = parent;
+    	this.aeropuerto = aero;
     	
+    	rdBtnPublico.setOnAction(e -> getTextFields(e));
+		rdBtnPrivado.setOnAction(e -> getTextFields(e));
+		
+		if (aeropuerto != null) {
+			
+			txtFNombre.setText(aeropuerto.getNombre());
+			txtFPais.setText(aeropuerto.getPais());
+			txtFCiudad.setText(aeropuerto.getPais());
+			txtFCalle.setText(aeropuerto.getCalle());
+			txtFNumero.setText(aeropuerto.getNumero()+"");
+			txtFAnio.setText(aeropuerto.getAnio()+"");
+			txtFCapacidad.setText(aeropuerto.getCapacidad()+"");
+			
+			if (aeropuertosT.privado(aeropuerto)) {
+				rdBtnPrivado.setSelected(true);
+				rdBtnPrivado.setDisable(true);
+				rdBtnPublico.setDisable(true);
+				txtFNumSocios.setText(aeropuerto.getNumSocios()+"");
+			} else {
+				rdBtnPublico.setSelected(true);
+				rdBtnPrivado.setDisable(true);
+				rdBtnPublico.setDisable(true);
+				txtFFinanciacion.setText(aeropuerto.getFinanciacion()+"");
+				txtFNumTrabajadores.setText(aeropuerto.getNumTrabajadores()+"");
+			}
+			ActionEvent e = new ActionEvent();
+			getTextFields(e);
+		}
     }
 	
 	private void getTextFields(ActionEvent event) {
@@ -185,11 +216,12 @@ public class AniadirAeropuerto implements Initializable {
 			alertWindows.showAndWait();
 
 		} else {
+			
 			/*
 			 * Si se han introducido los datos correctamente se guarfará el aeropuerto en la
 			 * base de datos
 			 */
-			Aeropuertos aeropuerto;
+			Aeropuertos a;
 			
 			String nombre = txtFNombre.getText().toString();
 			String pais = txtFPais.getText().toString();
@@ -201,18 +233,32 @@ public class AniadirAeropuerto implements Initializable {
 			
 			if (rdBtnPrivado.isSelected()) {
 				int numSocios = Integer.parseInt(txtFNumSocios.getText().toString());
-				aeropuerto = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, numSocios);
 				
-				aeropuertosT.getAeropuertoD().aniadirAeropuerto(aeropuerto, true);
+				if (aeropuerto != null) {
+					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad, numSocios);
+					aeropuertosT.getAeropuertoD().modificarAeropuerto(a, true);
+				} else {
+					a = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, numSocios);
+					aeropuertosT.getAeropuertoD().aniadirAeropuerto(a, true);
+				}
 			}
 			
 			if (rdBtnPublico.isSelected()) {
 				int financiacion = Integer.parseInt(txtFFinanciacion.getText().toString());
 				int numTrabajadores = Integer.parseInt(txtFNumTrabajadores.getText().toString());
-				aeropuerto = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
 				
-				aeropuertosT.getAeropuertoD().aniadirAeropuerto(aeropuerto, false);
+				if (aeropuerto != null) {
+					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
+					aeropuertosT.getAeropuertoD().modificarAeropuerto(a, false);
+				} else {
+					a = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
+					aeropuertosT.getAeropuertoD().aniadirAeropuerto(a, false);
+				}
 			}
+			
+			ActionEvent e = new ActionEvent();
+			aeropuertosT.getTabla(e);
+			
 			// Una vez guardada la persona se cerrara la ventana
 			Node n = (Node) event.getSource();
 
@@ -227,11 +273,5 @@ public class AniadirAeropuerto implements Initializable {
 		Node n = (Node) event.getSource();
 		Stage stage = (Stage) n.getScene().getWindow();
 		stage.close();
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-    	rdBtnPublico.setOnAction(e -> getTextFields(e));
-		rdBtnPrivado.setOnAction(e -> getTextFields(e));
 	}
 }
