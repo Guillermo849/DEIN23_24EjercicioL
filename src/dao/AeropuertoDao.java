@@ -176,31 +176,50 @@ public class AeropuertoDao {
 		}
 		return aeropuertosPublicos;
 	}
-
+	
+	/**
+	 * 
+	 * Añadirá un aeropuerto nuevo a la base de datos.
+	 * 
+	 * @param aeropuerto
+	 * @param privado
+	 */
 	public void aniadirAeropuerto(Aeropuertos aeropuerto, boolean privado) {
 
 		try {
+			
+			int idDireccion = direccionAeropuerto(aeropuerto);
+			
 			conexion = new ConexionBDD();
 
 			String consulta;
 			PreparedStatement pstmt;
-			int idDireccion = direccionAeropuerto(aeropuerto);
 
 			consulta = "INSERT INTO aeropuertos(nombre,anio_inauguracion, capacidad, id_direccion) VALUES('"
 					+ aeropuerto.getNombre() + "'," + aeropuerto.getAnio() + "," + aeropuerto.getCapacidad() + ","
 					+ idDireccion + ")";
-
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			pstmt.executeUpdate();
+			
+			int idAeropuerto = 0;
+			
+			consulta = "SELECT * FROM aeropuertos ORDER BY id DESC";
+			pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				idAeropuerto = rs.getInt("id");
+			}
+			
 			/*
 			 * Añade el nuevo aeropuerto al aeropuerto público o privado dependiendo de cual
 			 * se haya seleccionado
 			 */
-			if (privado == true) {
-
-				consulta = "INSERT INTO aeropuertos_privados VALUES (" + aeropuerto.getId() + ","
+			if (privado) {
+				consulta = "INSERT INTO aeropuertos_privados VALUES(" + idAeropuerto + ","
 						+ aeropuerto.getNumSocios() + ")";
 
 			} else {
-				consulta = "INSERT INTO aeropuertos_publicos VALUES (" + aeropuerto.getId() + ","
+				consulta = "INSERT INTO aeropuertos_publicos VALUES(" + idAeropuerto + ","
 						+ aeropuerto.getFinanciacion() + "," + aeropuerto.getNumTrabajadores() + ")";
 			}
 
@@ -219,8 +238,8 @@ public class AeropuertoDao {
 
 		try {
 			conexion = new ConexionBDD();
-			String consulta = "INSERT INTO aeropuertos(pais,ciudad,calle,numero) VALUES('" + pais + "','" + ciudad + "','"
-					+ calle + "'" + numero + ");";
+			String consulta = "INSERT INTO direcciones(pais,ciudad,calle,numero) VALUES('" + pais + "','" + ciudad + "','"
+					+ calle + "'," + numero + ");";
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
 
@@ -270,12 +289,11 @@ public class AeropuertoDao {
 		conexion = new ConexionBDD();
 
 		String consulta = "SELECT id FROM direcciones WHERE pais LIKE '" + aeropuerto.getPais() + "' AND ciudad LIKE '"
-				+ aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle() + "' AND numero == "
-				+ aeropuerto.getNumero();
+				+ aeropuerto.getCalle() + "' AND calle LIKE '" + aeropuerto.getCalle() + "' AND numero = " + aeropuerto.getNumero();
 		PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 		ResultSet rs = pstmt.executeQuery();
 
-		int idDireccion;
+		int idDireccion = 0;
 
 		/* Si no existe la direccion, creará una nueva */
 		if (rs.next() == false) {
@@ -285,7 +303,10 @@ public class AeropuertoDao {
 			/* Recoge la ip de la nueva direccion */
 			pstmt = conexion.getConexion().prepareStatement(consulta);
 			rs = pstmt.executeQuery();
-			idDireccion = rs.getInt("id");
+			if (rs.next()) {
+				idDireccion = rs.getInt("id");
+			}
+			
 			rs.close();
 
 			/* Si ya existe la direccion guardará el id de está */
