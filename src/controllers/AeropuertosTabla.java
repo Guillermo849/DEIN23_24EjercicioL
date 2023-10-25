@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,7 +8,10 @@ import dao.AeropuertoDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -15,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Aeropuertos;
 
 public class AeropuertosTabla implements Initializable {
@@ -92,6 +97,8 @@ public class AeropuertosTabla implements Initializable {
     
     private ObservableList<Aeropuertos> lstAeropuertos;
     
+    private AniadirAeropuerto addAeropuertoVentana;
+    
     @FXML
     void activarAvion(ActionEvent event) {
     	
@@ -99,7 +106,23 @@ public class AeropuertosTabla implements Initializable {
 
     @FXML
     void aniadirAeropuerto(ActionEvent event) {
-    	
+    	try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/aniadirAeropuerto.fxml"));
+			Parent root = loader.load();
+			/* Le dice a la nueva ventana cual es su ventana padre */
+			addAeropuertoVentana = loader.getController();
+			addAeropuertoVentana.setParent(this);
+
+			Stage agregarStage = new Stage();
+			agregarStage.setScene(new Scene(root));
+			agregarStage.setResizable(false);
+			agregarStage.setTitle("AVIONES-AÑADIR AEROPUERTOS");
+			agregarStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
@@ -132,7 +155,7 @@ public class AeropuertosTabla implements Initializable {
     	
     }
     
-    private void getTabla(ActionEvent event) {
+    public void getTabla(ActionEvent event) {
     	if (rdBtnPublico.isSelected()) {
     		tbColNumSocios.setVisible(false);
     		tbColFinanciacion.setVisible(true);
@@ -179,5 +202,9 @@ public class AeropuertosTabla implements Initializable {
 		lstAeropuertos = aeropuertoD.cargarAeropuertosPrivados();
 		
 		tbViewAeropuertos.setItems(aeropuertoD.cargarAeropuertosPrivados());
+	}
+	
+	public AeropuertoDao getAeropuertoD() {
+		return aeropuertoD;
 	}
 }
