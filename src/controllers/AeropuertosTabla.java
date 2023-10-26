@@ -278,6 +278,22 @@ public class AeropuertosTabla implements Initializable {
 
 	@FXML
 	void borrarAvion(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarAvion.fxml"));
+			Parent root = loader.load();
+			/* Le dice a la nueva ventana cual es su ventana padre */
+			BorrarAvionController borrarAvionCont = loader.getController();
+			borrarAvionCont.setParent(this);
+
+			Stage agregarStage = new Stage();
+			agregarStage.setScene(new Scene(root));
+			agregarStage.setResizable(false);
+			agregarStage.setTitle("AVIONES-ACTIVAR/DESACTIVAR AVIÓN");
+			agregarStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
