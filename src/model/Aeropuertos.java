@@ -152,4 +152,10 @@ public class Aeropuertos {
 	public void setNumTrabajadores(int numTrabajadores) {
 		this.numTrabajadores = numTrabajadores;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return nombre;
+	}
 }
