@@ -4,12 +4,20 @@ public class Aviones {
 	
 	private int id;
 	private String modelo;
-	private String numeroAsientos;
+	private int numeroAsientos;
 	private int velocidadMaxima;
 	private int activado;
 	private int idAeropuerto;
 	
-	public Aviones(int id, String modelo, String numeroAsientos, int velocidadMaxima, int activado, int idAeropuerto) {
+	public Aviones( String modelo, int numeroAsientos, int velocidadMaxima, int activado, int idAeropuerto) {
+		this.modelo = modelo;
+		this.numeroAsientos = numeroAsientos;
+		this.velocidadMaxima = velocidadMaxima;
+		this.activado = activado;
+		this.idAeropuerto = idAeropuerto;
+	}
+	
+	public Aviones(int id, String modelo, int numeroAsientos, int velocidadMaxima, int activado, int idAeropuerto) {
 		this.id = id;
 		this.modelo = modelo;
 		this.numeroAsientos = numeroAsientos;
@@ -34,11 +42,11 @@ public class Aviones {
 		this.modelo = modelo;
 	}
 
-	public String getNumeroAsientos() {
+	public int getNumeroAsientos() {
 		return numeroAsientos;
 	}
 
-	public void setNumeroAsientos(String numeroAsientos) {
+	public void setNumeroAsientos(int numeroAsientos) {
 		this.numeroAsientos = numeroAsientos;
 	}
 
