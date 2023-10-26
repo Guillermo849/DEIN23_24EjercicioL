@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import dao.AeropuertoDao;
+import dao.AvionesDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,16 +13,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Aeropuertos;
+import model.Aviones;
 
 public class AeropuertosTabla implements Initializable {
 
@@ -109,7 +113,7 @@ public class AeropuertosTabla implements Initializable {
 	}
 
 	@FXML
-	void activarAvion(ActionEvent event) {
+	void filtrarNombre(ActionEvent event) {
 
 	}
 
@@ -137,24 +141,6 @@ public class AeropuertosTabla implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@FXML
-	void aniadirAvion(ActionEvent event) {
-
-	}
-
-	@FXML
-	void borrarAeropuerto(ActionEvent event) {
-		if (aeropuertoIndex != -1) {
-			aeropuertoD.borrarAeropuerto(tbViewAeropuertos.getItems().get(aeropuertoIndex));
-			ActionEvent e = new ActionEvent();
-			getTabla(e);
-		}
-	}
-
-	@FXML
-	void borrarAvion(ActionEvent event) {
 	}
 
 	/**
@@ -185,14 +171,79 @@ public class AeropuertosTabla implements Initializable {
 		}
 	}
 
+	/**
+	 * Muestrá la información del aeropuerto seleccionado y la información de los
+	 * aviones que tiene
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void filtrarNombre(ActionEvent event) {
+	void mostrarAeropuerto(ActionEvent event) {
+		if (aeropuertoIndex != -1) {
+			Aeropuertos aero = tbViewAeropuertos.getItems().get(aeropuertoIndex);
+
+			Alert info = new Alert(AlertType.INFORMATION);
+			info.setHeaderText(null);
+			info.setTitle("informacion");
+			info.setHeaderText(null);
+			String mensaje = "Nombre: " + aero.getNombre() + "\n" 
+							+ "Pais: " + aero.getPais() + "\n" 
+							+ "Dirección: C/" + aero.getCalle() + " " + aero.getNumero() + ", " + aero.getPais() + "\n" 
+							+ "Año de inaugiración: " + aero.getAnio() + "\n" 
+							+ "Capacidad: " + aero.getCapacidad() + "\n" 
+							+ "Aviones: \n";
+			
+			AvionesDao avionesDao = new AvionesDao();
+			for (Aviones avio : avionesDao.cargarAvion(aeropuertoIndex)) {
+				mensaje += "\t Modelo: " + avio.getModelo() + "\n"
+						+ "\t Numero de asientos: " + avio.getNumeroAsientos() + "\n"
+						+ "\t Velocidad máxima: " + avio.getVelocidadMaxima() + "\n";
+				if (avio.getActivado() == 1) {
+					mensaje += "\t Activado \n";
+				} else {
+					mensaje += "\t Desactivado \n";
+				}
+			}
+			
+			if (privado(aero)) {
+				mensaje += "Privado \n"
+						+ "Número de socios: " + aero.getNumSocios();
+			} else {
+				mensaje += "Público \n" 
+						+ "Financiación: " + aero.getFinanciacion() + "\n"
+						+ "Número de trabajadores: " + aero.getNumTrabajadores();
+			}
+			
+			info.setContentText(mensaje);
+			info.showAndWait();
+
+		} else {
+			aeropuertoIndex = -1;
+		}
 
 	}
 
 	@FXML
-	void mostrarAeropuerto(ActionEvent event) {
+	void borrarAeropuerto(ActionEvent event) {
+		if (aeropuertoIndex != -1) {
+			aeropuertoD.borrarAeropuerto(tbViewAeropuertos.getItems().get(aeropuertoIndex));
+			ActionEvent e = new ActionEvent();
+			getTabla(e);
+		}
+	}
 
+	@FXML
+	void aniadirAvion(ActionEvent event) {
+
+	}
+
+	@FXML
+	void activarAvion(ActionEvent event) {
+
+	}
+
+	@FXML
+	void borrarAvion(ActionEvent event) {
 	}
 
 	/**
@@ -219,15 +270,6 @@ public class AeropuertosTabla implements Initializable {
 	}
 
 	/**
-	 * Devuelve el DAO de aeropuerto.
-	 * 
-	 * @return
-	 */
-	public AeropuertoDao getAeropuertoD() {
-		return aeropuertoD;
-	}
-
-	/**
 	 * Determina si un aeropuerto es privado o no
 	 * 
 	 * @param aero
@@ -243,6 +285,15 @@ public class AeropuertosTabla implements Initializable {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Devuelve el DAO de aeropuerto.
+	 * 
+	 * @return
+	 */
+	public AeropuertoDao getAeropuertoD() {
+		return aeropuertoD;
 	}
 
 	/**
