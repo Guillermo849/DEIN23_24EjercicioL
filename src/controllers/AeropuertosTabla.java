@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import dao.AeropuertoDao;
 import dao.AvionesDao;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -114,7 +116,15 @@ public class AeropuertosTabla implements Initializable {
 
 	@FXML
 	void filtrarNombre(ActionEvent event) {
-
+		txtVNombre.textProperty().addListener(e -> {
+            /* Creamos una FilteredList con los datos de la tabla */
+            FilteredList<Aeropuertos> filteredData = new FilteredList<Aeropuertos>(tbViewAeropuertos.getItems());
+            /* Establecemos la regla del filtro: Si no contiene el texto en el textfield no se muestra */
+            filteredData.setPredicate(s -> s.getNombre().contains(txtVNombre.getText()));
+            /* Ordenamos la lista con una SortedList*/
+            SortedList<Aeropuertos> filteredSortedData = new SortedList<Aeropuertos>(filteredData);
+            tbViewAeropuertos.setItems(filteredSortedData); // Añadimos la lista ordenada a la tabla
+        });;
 	}
 
 	/**
