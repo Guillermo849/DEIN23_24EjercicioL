@@ -320,7 +320,7 @@ public class AeropuertoDao {
 		return idDireccion;
 	}
 	
-	public void borrarAeropuerto(Aeropuertos aeropuerto, boolean privado) {
+	public void borrarAeropuerto(Aeropuertos aeropuerto) {
 		
 		int idAeropuerto = aeropuerto.getId();
 		
@@ -328,14 +328,6 @@ public class AeropuertoDao {
 			conexion = new ConexionBDD();
 			String consulta = "DELETE FROM aeropuertos WHERE id = " + idAeropuerto + ";";
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
-			pstmt.executeUpdate();
-			
-			if (privado == true) {
-				consulta = "DELETE FROM aeropuertos_privados WHERE id = " + idAeropuerto + ";";
-			} else {
-				consulta = "DELETE FROM aeropuertos_publicos WHERE id = " + idAeropuerto + ";";
-			}
-			pstmt = conexion.getConexion().prepareStatement(consulta);
 			pstmt.executeUpdate();
 			
 			conexion.CloseConexion();

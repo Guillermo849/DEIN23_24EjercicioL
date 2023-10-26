@@ -73,43 +73,43 @@ public class AniadirAeropuerto {
 	private Label lblNumSocios;
 
 	private AeropuertosTabla aeropuertosT;
-	
+
 	private Aeropuertos aeropuerto;
-	
+
 	public void setParent(AeropuertosTabla parent, Aeropuertos aero) {
-    	this.aeropuertosT = parent;
-    	this.aeropuerto = aero;
-    	
-    	rdBtnPublico.setOnAction(e -> getTextFields(e));
+		this.aeropuertosT = parent;
+		this.aeropuerto = aero;
+
+		rdBtnPublico.setOnAction(e -> getTextFields(e));
 		rdBtnPrivado.setOnAction(e -> getTextFields(e));
-		
+
 		if (aeropuerto != null) {
-			
+
 			txtFNombre.setText(aeropuerto.getNombre());
 			txtFPais.setText(aeropuerto.getPais());
 			txtFCiudad.setText(aeropuerto.getPais());
 			txtFCalle.setText(aeropuerto.getCalle());
-			txtFNumero.setText(aeropuerto.getNumero()+"");
-			txtFAnio.setText(aeropuerto.getAnio()+"");
-			txtFCapacidad.setText(aeropuerto.getCapacidad()+"");
-			
+			txtFNumero.setText(aeropuerto.getNumero() + "");
+			txtFAnio.setText(aeropuerto.getAnio() + "");
+			txtFCapacidad.setText(aeropuerto.getCapacidad() + "");
+
 			if (aeropuertosT.privado(aeropuerto)) {
 				rdBtnPrivado.setSelected(true);
 				rdBtnPrivado.setDisable(true);
 				rdBtnPublico.setDisable(true);
-				txtFNumSocios.setText(aeropuerto.getNumSocios()+"");
+				txtFNumSocios.setText(aeropuerto.getNumSocios() + "");
 			} else {
 				rdBtnPublico.setSelected(true);
 				rdBtnPrivado.setDisable(true);
 				rdBtnPublico.setDisable(true);
-				txtFFinanciacion.setText(aeropuerto.getFinanciacion()+"");
-				txtFNumTrabajadores.setText(aeropuerto.getNumTrabajadores()+"");
+				txtFFinanciacion.setText(aeropuerto.getFinanciacion() + "");
+				txtFNumTrabajadores.setText(aeropuerto.getNumTrabajadores() + "");
 			}
 			ActionEvent e = new ActionEvent();
 			getTextFields(e);
 		}
-    }
-	
+	}
+
 	private void getTextFields(ActionEvent event) {
 		if (rdBtnPublico.isSelected()) {
 			lblNumSocios.setVisible(false);
@@ -140,8 +140,10 @@ public class AniadirAeropuerto {
 		String mensaje = "";
 
 		if (txtFNombre.getText().isEmpty() || txtFPais.getText().isEmpty() || txtFCiudad.getText().isEmpty()
-				|| txtFCalle.getText().isEmpty() || txtFNumero.getText().isEmpty() || txtFAnio.getText().isEmpty()
-				|| txtFCapacidad.getText().isEmpty()) {
+				|| txtFCalle.getText().isEmpty() || txtFNumero.getText().isEmpty()
+				|| !txtFNumero.getText().matches("[0-9]*") || txtFAnio.getText().isEmpty()
+				|| !txtFAnio.getText().matches("[0-9]*") || txtFCapacidad.getText().isEmpty()
+				|| !txtFCapacidad.getText().matches("[0-9]*")) {
 
 			error = true;
 
@@ -190,7 +192,7 @@ public class AniadirAeropuerto {
 				mensaje += "El campo Num Socios debe ser númerico \n";
 			}
 		}
-		
+
 		/* Comprueba los datos del nuevo Aeropuerto Público */
 		if ((txtFFinanciacion.getText().isEmpty() || txtFNumTrabajadores.getText().isEmpty())
 				&& rdBtnPublico.isSelected()) {
@@ -216,13 +218,13 @@ public class AniadirAeropuerto {
 			alertWindows.showAndWait();
 
 		} else {
-			
+
 			/*
 			 * Si se han introducido los datos correctamente se guarfará el aeropuerto en la
 			 * base de datos
 			 */
 			Aeropuertos a;
-			
+
 			String nombre = txtFNombre.getText().toString();
 			String pais = txtFPais.getText().toString();
 			String ciudad = txtFCiudad.getText().toString();
@@ -230,40 +232,41 @@ public class AniadirAeropuerto {
 			int numero = Integer.parseInt(txtFNumero.getText().toString());
 			int anio = Integer.parseInt(txtFAnio.getText().toString());
 			int capacidad = Integer.parseInt(txtFCapacidad.getText().toString());
-			
+
 			if (rdBtnPrivado.isSelected()) {
 				int numSocios = Integer.parseInt(txtFNumSocios.getText().toString());
-				
+
 				if (aeropuerto != null) {
-					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad, numSocios);
+					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad,
+							numSocios);
 					aeropuertosT.getAeropuertoD().modificarAeropuerto(a, true);
 				} else {
 					a = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, numSocios);
 					aeropuertosT.getAeropuertoD().aniadirAeropuerto(a, true);
 				}
 			}
-			
+
 			if (rdBtnPublico.isSelected()) {
 				int financiacion = Integer.parseInt(txtFFinanciacion.getText().toString());
 				int numTrabajadores = Integer.parseInt(txtFNumTrabajadores.getText().toString());
-				
+
 				if (aeropuerto != null) {
-					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
+					a = new Aeropuertos(aeropuerto.getId(), nombre, pais, ciudad, calle, numero, anio, capacidad,
+							financiacion, numTrabajadores);
 					aeropuertosT.getAeropuertoD().modificarAeropuerto(a, false);
 				} else {
-					a = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion, numTrabajadores);
+					a = new Aeropuertos(nombre, pais, ciudad, calle, numero, anio, capacidad, financiacion,
+							numTrabajadores);
 					aeropuertosT.getAeropuertoD().aniadirAeropuerto(a, false);
 				}
 			}
-			
+
 			ActionEvent e = new ActionEvent();
 			aeropuertosT.getTabla(e);
-			
+
 			// Una vez guardada la persona se cerrara la ventana
 			Node n = (Node) event.getSource();
-
 			Stage stage = (Stage) n.getScene().getWindow();
-
 			stage.close();
 		}
 	}
