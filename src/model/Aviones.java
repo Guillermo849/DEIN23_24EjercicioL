@@ -73,4 +73,9 @@ public class Aviones {
 	public void setIdAeropuerto(int idAeropuerto) {
 		this.idAeropuerto = idAeropuerto;
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return modelo;
+	}
 }

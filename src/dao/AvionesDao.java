@@ -6,15 +6,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import conexion.ConexionBDD;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Aviones;
 
 public class AvionesDao {
 	private ConexionBDD conexion;
 
 	/* Devuelve una lista de los aviones almacenados en la base de datos */
-	public ArrayList<Aviones> cargarAvion(int id) {
+	public ObservableList<Aviones> cargarAvion(int id) {
 
-		ArrayList<Aviones> aviones = new ArrayList<Aviones>();
+		ObservableList<Aviones> aviones = FXCollections.observableArrayList();
 		try {
 			conexion = new ConexionBDD();
 			String consulta = "select * from aviones where id_aeropuerto = " + id;

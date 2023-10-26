@@ -1,7 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-
 import dao.AvionesDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,9 +76,9 @@ public class AniadirAvionController {
 			aviso.setHeaderText(null);
 			String mensaje = "";
 			if (txtFModelo.getText().isEmpty()) 
-				mensaje += "El campo Nombre es Obligatorio \n";
+				mensaje += "El campo Modelo es Obligatorio \n";
 			if (txtFAsientos.getText().isEmpty()) 
-				mensaje += "El campo Apellidos es Obligatorio \n";
+				mensaje += "El campo Numero Asientos es Obligatorio \n";
 			if (!txtFAsientos.getText().matches("[0-9]*")) 
 				mensaje += "El campo Edad debe ser númerico \n";
 			if (txtFVelocidadMax.getText().isEmpty()) 
@@ -101,7 +99,7 @@ public class AniadirAvionController {
 					Integer.parseInt(txtFVelocidadMax.getText().toString()), activo,
 					cmbxAeropuertos.getSelectionModel().getSelectedItem().getId());
 
-			ArrayList<Aviones> lstAviones = avionDao
+			ObservableList<Aviones> lstAviones = avionDao
 					.cargarAvion(cmbxAeropuertos.getSelectionModel().getSelectedItem().getId());
 
 			boolean existe = true;
