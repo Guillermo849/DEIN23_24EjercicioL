@@ -28,7 +28,7 @@ public class BDDGestorUsuario {
 			ResultSet res = pstmt.executeQuery();
 			
 			while (res.next()) {
-				if (usu.equals(res.getString("usuario")) && passwd.equals(res.getString("passwd"))) {
+				if (usu.equals(res.getString("usuario")) && passwd.equals(res.getString("password"))) {
 					res.close();
 					conexion.CloseConexion();
 					return true;

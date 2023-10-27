@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import dao.BDDGestorUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +24,8 @@ public class UsuarioController implements Initializable {
 
     @FXML
     void iniciarSesion(ActionEvent event) {
-    	if (txtFUsuario.getText().toString().equals("admin") && txtFPasswd.getText().toString().equals("admin")) {
+    	BDDGestorUsuario gstrUsuario = new BDDGestorUsuario();
+    	if (gstrUsuario.comprobarUsuario(txtFUsuario.getText().toString(), txtFPasswd.getText().toString())) {
     		Main aeropuertosTabla = new Main();
     		aeropuertosTabla.changeScene("/fxml/aeropuertosTabla.fxml");
     	}
