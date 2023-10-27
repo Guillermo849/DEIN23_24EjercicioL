@@ -204,7 +204,7 @@ public class AeropuertosTabla implements Initializable {
 							+ "Aviones: \n";
 			
 			AvionesDao avionesDao = new AvionesDao();
-			for (Aviones avio : avionesDao.cargarAvion(aeropuertoIndex)) {
+			for (Aviones avio : avionesDao.cargarAvion(aero.getId())) {
 				mensaje += "\t Modelo: " + avio.getModelo() + "\n"
 						+ "\t Numero de asientos: " + avio.getNumeroAsientos() + "\n"
 						+ "\t Velocidad máxima: " + avio.getVelocidadMaxima() + "\n";
