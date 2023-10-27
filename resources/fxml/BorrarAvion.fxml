@@ -35,12 +35,12 @@
          <children>
             <Label text="Aeropuertos:" />
             <Label text="Aviones:" GridPane.rowIndex="1" />
-            <ComboBox fx:id="cmbxAeropuertos" onAction="#cargarAeropuertos" prefHeight="25.0" prefWidth="356.0" GridPane.columnIndex="1">
+            <ComboBox fx:id="cmbxAeropuertos" prefHeight="25.0" prefWidth="356.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </ComboBox>
-            <ComboBox fx:id="cmBxAviones" onAction="#cargarAviones" prefHeight="25.0" prefWidth="371.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ComboBox fx:id="cmBxAviones" prefHeight="25.0" prefWidth="371.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>

@@ -40,7 +40,7 @@
         </rowConstraints>
          <children>
             <Label text="Aeropuertos:" GridPane.rowIndex="4" />
-            <ComboBox fx:id="cmbxAeropuertos" onAction="#cargarAeropuertos" prefHeight="25.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <ComboBox fx:id="cmbxAeropuertos" prefHeight="25.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>

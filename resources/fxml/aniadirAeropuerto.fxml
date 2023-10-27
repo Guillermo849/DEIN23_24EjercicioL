@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AeropuertoPrivadoController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AniadirAeropuerto">
    <bottom>
       <HBox alignment="CENTER" prefHeight="73.0" prefWidth="618.0" BorderPane.alignment="CENTER">
          <children>
@@ -63,7 +62,8 @@
             <Label text="Número:" GridPane.rowIndex="4" />
             <Label text="Año de inaguración:" GridPane.rowIndex="5" />
             <Label text="Capacidad:" GridPane.rowIndex="6" />
-            <Label text="NºSocios:" GridPane.rowIndex="8" />
+            <Label fx:id="lblFinanciacion" text="Financiación:" GridPane.rowIndex="8" />
+            <Label fx:id="lblNumTrabajadores" text="Número de trabajadores:" GridPane.rowIndex="9" />
             <TextField fx:id="txtFNombre" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="30.0" />
@@ -99,21 +99,32 @@
                   <Insets left="20.0" right="300.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="txtFNumSocios" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <TextField fx:id="txtFFinanciacion" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets left="20.0" right="300.0" />
                </GridPane.margin>
             </TextField>
-            <RadioButton fx:id="rdBtnPublico" mnemonicParsing="false" text="Público" GridPane.rowIndex="7">
+            <TextField fx:id="txtFNumTrabajadores" GridPane.columnIndex="1" GridPane.rowIndex="9">
+               <GridPane.margin>
+                  <Insets left="20.0" right="300.0" />
+               </GridPane.margin>
+            </TextField>
+            <RadioButton fx:id="rdBtnPublico" mnemonicParsing="false" selected="true" text="Público" GridPane.rowIndex="7">
                <toggleGroup>
                   <ToggleGroup fx:id="categoria" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="rdBtnPrivado" mnemonicParsing="false" selected="true" text="Privado" toggleGroup="$categoria" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <RadioButton fx:id="rdBtnPrivado" mnemonicParsing="false" text="Privado" toggleGroup="$categoria" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </RadioButton>
+            <TextField fx:id="txtFNumSocios" prefHeight="25.0" prefWidth="121.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets left="20.0" right="300.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label fx:id="lblNumSocios" text="Num Socios:" visible="false" GridPane.rowIndex="8" />
          </children>
       </GridPane>
    </center>

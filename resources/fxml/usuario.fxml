@@ -15,7 +15,7 @@
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="410.0">
                <children>
                   <Label text="Usuario:" />
-                  <TextField prefHeight="25.0" prefWidth="215.0">
+                  <TextField fx:id="txtFUsuario" prefHeight="25.0" prefWidth="215.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -25,7 +25,7 @@
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="410.0">
                <children>
                   <Label text="Password:" />
-                  <TextField prefHeight="25.0" prefWidth="206.0">
+                  <TextField fx:id="txtFPasswd" prefHeight="25.0" prefWidth="206.0">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -39,7 +39,7 @@
       </VBox>
    </center>
    <bottom>
-      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Login" BorderPane.alignment="CENTER">
+      <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="123.0" text="Login" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </BorderPane.margin>

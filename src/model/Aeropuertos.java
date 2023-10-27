@@ -13,6 +13,31 @@ public class Aeropuertos {
 	private int financiacion;
 	private int numTrabajadores;
 	
+	public Aeropuertos( String nombre, String pais, String ciudad, String calle, int numero, int anio,
+			int capacidad, int financiacion, int numTrabajadores) {
+		this.nombre = nombre;
+		this.pais = pais;
+		this.ciudad = ciudad;
+		this.calle = calle;
+		this.numero = numero;
+		this.anio = anio;
+		this.capacidad = capacidad;
+		this.financiacion = financiacion;
+		this.numTrabajadores = numTrabajadores;
+	}
+	
+	public Aeropuertos( String nombre, String pais, String ciudad, String calle, int numero, int anio,
+			int capacidad, int numSocios) {
+		this.nombre = nombre;
+		this.pais = pais;
+		this.ciudad = ciudad;
+		this.calle = calle;
+		this.numero = numero;
+		this.anio = anio;
+		this.capacidad = capacidad;
+		this.numSocios = numSocios;
+	}
+	
 	public Aeropuertos(int id, String nombre, String pais, String ciudad, String calle, int numero, int anio,
 			int capacidad, int numSocios) {
 		this.id = id;
@@ -126,5 +151,11 @@ public class Aeropuertos {
 
 	public void setNumTrabajadores(int numTrabajadores) {
 		this.numTrabajadores = numTrabajadores;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return nombre;
 	}
 }
